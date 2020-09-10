@@ -1,0 +1,63 @@
+---
+title: "FY21 In-State vs Out-State Traffic to Main and Admissions"
+author: "Office of Marketing and Brand Management"
+date: "9/10/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(knitr)
+```
+
+## Basic Description:
+
+Ask requested by the Director of Marketing and Brand Management, the data information in this report pertains to a year over year change in the amount of web traffic to the University's main landing page, [usm.maine.edu](https://usm.maine.edu/)and the Office of Admissions' main landing page, [usm.maine.edu/office-of-admissions](https://usm.maine.edu/office-of-admissions) for in-state and out-of-state visitors.
+
+### Main Landing Page
+
+
+```{r}
+GA_thisWk <- read.csv("C:/Users/christine.iyer/Box/FY21 Special Projects/FY21 In-StatevsOut-State-Web-Main/main-page.csv", header = T, stringsAsFactors = F)
+
+kable(GA_thisWk %>% 
+  mutate(date = as.Date(date, format = "%Y-%m-%d"),
+         Location = ifelse(region == "Maine", "In-State", "Out-of-State"), 
+         FY = ifelse(date < "2019-07-01", "FY19", 
+                     ifelse(date > "2020-06-30", "FY21", "FY20"))) %>% 
+  group_by(FY, Location) %>% summarise(UPV = sum(uniquePageviews)) %>% 
+  spread(FY, UPV) %>% 
+  select(-FY21) %>% 
+  mutate(PctDif= paste0(round((FY20-FY19)/FY19 * 100,2),"%"),
+         FY19 = prettyNum(FY19, big.mark = ","), 
+         FY20 = prettyNum(FY20, big.mark = ",")) )
+```
+
+
+### Admissions Main Page
+
+
+```{r}
+GA_thisWk_Admit <- read.csv("C:/Users/christine.iyer/Box/FY21 Special Projects/FY21 In-StatevsOut-State-Web-Main/admit-page.csv", header = T, stringsAsFactors = F)
+
+kable(GA_thisWk_Admit %>% 
+  mutate(date = as.Date(date, format = "%Y-%m-%d"),
+         Location = ifelse(region == "Maine", "In-State", "Out-of-State"), 
+         FY = ifelse(date < "2019-07-01", "FY19", 
+                     ifelse(date > "2020-06-30", "FY21", "FY20"))) %>% 
+  group_by(FY, Location) %>% summarise(UPV = sum(uniquePageviews)) %>% 
+  spread(FY, UPV) %>% 
+  select(-FY21) %>% 
+  mutate(PctDif= paste0(round((FY20-FY19)/FY19 * 100,2),"%"),
+         FY19 = prettyNum(FY19, big.mark = ","), 
+         FY20 = prettyNum(FY20, big.mark = ",")) )
+```

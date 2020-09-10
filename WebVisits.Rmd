@@ -1,0 +1,120 @@
+---
+title: "FY21 Web Page Traffic In-State vs. Out-of-State"
+author: "Office of Marketing and Brand Management"
+date: "9/10/2020"
+output:   pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+
+```{r library}
+# install.packages("googleAnalyticsR", dependencies = T)
+# library(googleAnalyticsR)
+# library(googleAuthR)
+library(knitr)
+library(dplyr)
+library(tidyr)
+```
+
+```{r auth and account, eval=FALSE, include=FALSE}
+ga_auth()
+
+my_accounts <- ga_account_list()
+View(my_accounts)
+ga_id <- 63145830
+```
+
+
+### Step 2
+Set date parameters
+
+```{r date range, eval=FALSE, include=FALSE}
+start_date <- "1532daysAgo"
+end_date <-  "1167daysAgo"
+
+campaign_filter <- dim_filter(dimension="landingPagePath",operator="EXACT",expressions="/office-of-admissions")
+my_filter_clause <- filter_clause_ga4(list(campaign_filter))
+
+GA_thisWk_Admit_2 <- google_analytics(ga_id, date_range = c(start_date, end_date),
+                                metrics = c("uniquePageviews", "bounces", "timeOnPage", "sessions", "newUsers", "pageviews", "exits", "sessionDuration"),
+                                dimensions = c("date", "landingPagePath","source", "medium", "region"),
+                                dim_filters = my_filter_clause,
+                                anti_sample = TRUE
+                                )
+
+write.csv(GA_thisWk_Admit_2, "C:/Users/christine.iyer/Box/FY21 Special Projects/FY21 In-StatevsOut-State-Web-Main/admit-page-2.csv", row.names = F
+          )
+dim(GA_thisWk_Admit_2)
+
+```
+
+
+
+```{r newDateRangedate range}
+# start_date <- "1532daysAgo"
+# end_date <-   "1167daysAgo"
+```
+
+
+
+```{r}
+# GA_this2WksAgo <- google_analytics(ga_id, date_range = c(start_date, end_date), 
+#                                 metrics = c("uniquePageviews", "bounces", "timeOnPage", "sessions", "newUsers", "pageviews", "exits", "sessionDuration"), 
+#                                 dimensions = c("date", "landingPagePath","source", "medium", "region"), 
+#                                 dim_filters = my_filter_clause,
+#                                 anti_sample = TRUE
+#                                 )
+```
+
+Main Landing Page
+
+
+```{r}
+GA_thisWk <- read.csv("C:/Users/christine.iyer/Box/FY21 Special Projects/FY21 In-StatevsOut-State-Web-Main/main-page.csv", header = T, stringsAsFactors = F)
+
+kable(GA_thisWk %>% 
+  mutate(date = as.Date(date, format = "%Y-%m-%d"),
+         Location = ifelse(region == "Maine", "In-State", "Out-of-State"), 
+         FY = ifelse(date < "2019-07-01", "FY19", 
+                     ifelse(date > "2020-06-30", "FY21", "FY20"))) %>% 
+  group_by(FY, Location) %>% summarise(UPV = sum(uniquePageviews)) %>% 
+  spread(FY, UPV) %>% 
+  select(-FY21) %>% 
+  mutate(PctDif= paste0(round((FY20-FY19)/FY19 * 100,2),"%"),
+         FY19 = prettyNum(FY19, big.mark = ","), 
+         FY20 = prettyNum(FY20, big.mark = ",")) )
+         
+         
+
+
+```
+
+Admissions Main Page
+
+
+```{r}
+GA_thisWk_Admit <- read.csv("C:/Users/christine.iyer/Box/FY21 Special Projects/FY21 In-StatevsOut-State-Web-Main/admit-page.csv", header = T, stringsAsFactors = F)
+
+kable(GA_thisWk_Admit %>% 
+  mutate(date = as.Date(date, format = "%Y-%m-%d"),
+         Location = ifelse(region == "Maine", "In-State", "Out-of-State"), 
+         FY = ifelse(date < "2019-07-01", "FY19", 
+                     ifelse(date > "2020-06-30", "FY21", "FY20"))) %>% 
+  group_by(FY, Location) %>% summarise(UPV = sum(uniquePageviews)) %>% 
+  spread(FY, UPV) %>% 
+  select(-FY21) %>% 
+  mutate(PctDif= paste0(round((FY20-FY19)/FY19 * 100,2),"%"),
+         FY19 = prettyNum(FY19, big.mark = ","), 
+         FY20 = prettyNum(FY20, big.mark = ",")) )
+         
+         
+
+
+```
