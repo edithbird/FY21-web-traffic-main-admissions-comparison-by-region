@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 
 ```{r library}
 # install.packages("googleAnalyticsR", dependencies = T)
-# library(googleAnalyticsR)
-# library(googleAuthR)
+library(googleAnalyticsR)
+library(googleAuthR)
 library(knitr)
 library(dplyr)
 library(tidyr)
@@ -118,3 +118,9 @@ kable(GA_thisWk_Admit %>%
 
 
 ```
+
+\href{https://www.wrike.com/open.htm?id=562722425}{{\color{blue}{\underline{Wrike Project Details}}}}
+
+
+
+\href{https://github.com/edithbird/FY21-web-traffic-main-admissions-comparison-by-region}{{\color{blue}{\underline{Github Repository}}}}

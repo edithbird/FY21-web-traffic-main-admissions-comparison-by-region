@@ -1,8 +1,13 @@
 ---
-title: "FY21 In-State vs Out-State Traffic to Main and Admissions"
-author: "Office of Marketing and Brand Management"
+title: "FY21 In-State vs Out-State Traffic to the University's Main and Admissions' Landing Pages"
+author: "Office of Marketing and Brand Management at the University of Southern Maine"
 date: "9/10/2020"
 output: pdf_document
+header-includes:
+  - \usepackage{titling}
+  - \pretitle{\begin{center}
+  - \posttitle{\end{center}}
+    \includegraphics[width=2in,height=2in]{C:/Users/christine.iyer/Pictures/Logo.PNG}\LARGE\\}
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +26,9 @@ library(knitr)
 
 ## Basic Description:
 
-Ask requested by the Director of Marketing and Brand Management, the data information in this report pertains to a year over year change in the amount of web traffic to the University's main landing page, [usm.maine.edu](https://usm.maine.edu/)and the Office of Admissions' main landing page, [usm.maine.edu/office-of-admissions](https://usm.maine.edu/office-of-admissions) for in-state and out-of-state visitors.
+Ask requested by the Director of the Office of Marketing and Brand Management, the information provided in this report pertains to a year over year (FY19 and FY20) change in the amount of web traffic to the University's main landing page, \href{https://usm.maine.edu/}{{\color{blue}{\underline{usm.maine.edu}}}}, and the Office of Admissions' main landing page, \href{https://usm.maine.edu/office-of-admissions}{{\color{blue}{\underline{usm.maine.edu/office-of-admissions}}}} and compares in-state and out-of-state unique page views.
+
+## Findings
 
 ### Main Landing Page
 
@@ -61,3 +68,15 @@ kable(GA_thisWk_Admit %>%
          FY19 = prettyNum(FY19, big.mark = ","), 
          FY20 = prettyNum(FY20, big.mark = ",")) )
 ```
+
+## Conclusions
+
+* In FY20, traffic to the University's main landing page saw a drop in unique pageviews, down 6.75% from out-of state visitors and down 6% from in-state visitors from FY19. 
+
+* In FY20, traffic from out-of-state visitors to the Office of Admissions' main landing page saw a slight increase in unique pageviews,  up by nearly 1%, while in-state visitors dropped by  18% in the same time period.
+
+#
+
+\href{https://www.wrike.com/open.htm?id=562722425}{{\color{blue}{\underline{Wrike Project Details}}}}
+
+\href{https://github.com/edithbird/FY21-web-traffic-main-admissions-comparison-by-region}{{\color{blue}{\underline{Github Repository}}}}
